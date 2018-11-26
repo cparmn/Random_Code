@@ -1,0 +1,8 @@
+ PS C:\WINDOWS> $username = 'alibe'
+$GroupName = "Administrators"
+$computer=@(Get-ADComputer -LDAPFilter "(name=ccmrnserv0)"-SearchBase "OU=Servers,DC=Organization,DC=org")
+$ComputerName=$computer.Name
+$Group = [ADSI]"WinNT://$ComputerName/$GroupName,group"
+$Members = @($Group.psbase.Invoke('Members'))
+$Members | % {$name = $_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null);if ($name -eq $username) {write-host $name "is local administrator on" $computer.name}}
+alibe is local administrator on CCMRNSERV0
