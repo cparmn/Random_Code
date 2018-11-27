@@ -7,7 +7,7 @@ function Force-Reset
         [Parameter(Mandatory=$True)]
         [ValidateNotNull()]
         [ValidateNotNullorEmpty()]
-        [ValidatePattern("[a-z][A-Z]")]
+        [ValidatePattern(“[a-z][A-Z]\\”)]
         [string[]]$FILE
         )
 
@@ -28,21 +28,14 @@ function Force-Reset
                             {
                                 write-host "Success: User account '$userID' set to change password on next login."
                             }
-                            else
-                            {
-                                write-host -ForegroundColor red "Error:  Cannot find an object with identity: '$userID'" 
-                            }
                         }
                         else
                         {
-                            write-host -ForegroundColor red "Error: $userID was not changed"
+                            write-host -ForegroundColor red "Error:  Cannot find an object with identity: '$userID'" 
                         }
-                    }
-                    else
-                    {
-                        write-host -ForegroundColor red "Error:  Cannot find an object with identity: '$userID'" 
                     }
                 }
             }
         }
 }
+Force-Reset $args[0]
