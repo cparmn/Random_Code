@@ -25,10 +25,10 @@ foreach ($Computer in $Computers)
     else
     {
     write-host "Task Exist, Deleting Task"
-    Invoke-command -Com_.Name.replace('HKEY_USERSputerName $Computer -ScriptBlock {
+    Invoke-command -ComputerName $Computer -ScriptBlock {
     schtasks.exe /delete /tn "Office Update Check" /F
     New-PSDrive -Name HKU -PSProvider Registry -Root Registry::HKEY_USERS | Out-Null
-    Get-ChildItem REGISTRY::HKEY_USERS | % {$\', '')} | % {Remove-ItemProperty -Path "HKU:\$_\Software\Microsoft\Windows\CurrentVersion\run" -Name "Office Update" -ErrorAction SilentlyContinue }
+    Get-ChildItem REGISTRY::HKEY_USERS | % {$_.Name.replace('HKEY_USERS\', '')} | % {Remove-ItemProperty -Path "HKU:\$_\Software\Microsoft\Windows\CurrentVersion\run" -Name "Office Update" -ErrorAction SilentlyContinue }
     Remove-PSDrive -name HKU
     } -Credential $Creds -ErrorVariable ErrMsg 2> $null
     if(!$?)
@@ -51,8 +51,8 @@ foreach ($Computer in $Computers)
 # SIG # Begin signature block
 # MIIZMAYJKoZIhvcNAQcCoIIZITCCGR0CAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUkWE76fjFQQD7whln7fbURaUz
-# ixagghQ+MIIEmTCCA4GgAwIBAgIPFojwOSVeY45pFDkH5jMLMA0GCSqGSIb3DQEB
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUcNXRJOSw8OdkgCcADCd0P9B0
+# Ih6gghQ+MIIEmTCCA4GgAwIBAgIPFojwOSVeY45pFDkH5jMLMA0GCSqGSIb3DQEB
 # BQUAMIGVMQswCQYDVQQGEwJVUzELMAkGA1UECBMCVVQxFzAVBgNVBAcTDlNhbHQg
 # TGFrZSBDaXR5MR4wHAYDVQQKExVUaGUgVVNFUlRSVVNUIE5ldHdvcmsxITAfBgNV
 # BAsTGGh0dHA6Ly93d3cudXNlcnRydXN0LmNvbTEdMBsGA1UEAxMUVVROLVVTRVJG
@@ -165,23 +165,23 @@ foreach ($Computer in $Computers)
 # ZWFsdGggSXNzdWluZy1DQQITVAAAm/jpbUO7eavHVwAAAACb+DAJBgUrDgMCGgUA
 # oHgwGAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYB
 # BAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0B
-# CQQxFgQUnm5/SNM+tNBLpQYLU2JpG6g4550wDQYJKoZIhvcNAQEBBQAEggEAvbCM
-# l+/6UepbDH1T8tPlOI7AWabYa9jN4wEl44rzUVoDjF0TrFsdiMEI/vE1hbvnao6J
-# IXv1aM/ghD6P3mOvl8/15zr41Jx3CE2iY5PLuXtDxx59Luz7gF49iPe7o4Virw6n
-# qEx3H4hzQY3+qK/T+dEjnIj7+/V5JvdHeIHcqhhQA2QM14VHl3FMQWZy60Pj98xV
-# B1reJQV9zbR7I9+5OEzl9+BV+nJN63FbJnWRFMjNQiNtY8C3FhVBFkg/Ugft+RXE
-# VlVMJNVln8F9bfTm9A+7NJzCl9l4ZcJHvtKVFkmI4OH1gZq99sBOF9A9iSj+Ojtf
-# TxWPKJj5AxnJWHvPFKGCAkMwggI/BgkqhkiG9w0BCQYxggIwMIICLAIBATCBqTCB
+# CQQxFgQUBRZGZKfKa2/NCk6cBUpOjOEEz9UwDQYJKoZIhvcNAQEBBQAEggEAgiDh
+# Htpc2thPplp1EqTCI0xSA0yTYci5/7ADNOEwJ/3d1hIx7h9+3WkukWqilPhfP9/K
+# 8qGhS049SbKR7eAsSAKmtzLZDQdfDsk9bwqa/GK30ZpzM6ANqpEoHxtFsyISstHu
+# CckMw6vIrKo+vRdrbxhjinTCL44mp6um/VF0kQMseQAt56RR+krJcrUcZJv37tiM
+# 7oXfJl4UrwPu2gozlCwP4LVC5YpfJcMSdCS+lSQiTVhWdUFi7s+E6kggbBTAEocb
+# R4yYCR+fTbJE2prd9Se9v1HokVCokSOIMZXjo61p8JFxHBkUVJ8iwBzm0aPiBYYJ
+# O01J9t5fEkdSTZHr8KGCAkMwggI/BgkqhkiG9w0BCQYxggIwMIICLAIBATCBqTCB
 # lTELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAlVUMRcwFQYDVQQHEw5TYWx0IExha2Ug
 # Q2l0eTEeMBwGA1UEChMVVGhlIFVTRVJUUlVTVCBOZXR3b3JrMSEwHwYDVQQLExho
 # dHRwOi8vd3d3LnVzZXJ0cnVzdC5jb20xHTAbBgNVBAMTFFVUTi1VU0VSRmlyc3Qt
 # T2JqZWN0Ag8WiPA5JV5jjmkUOQfmMwswCQYFKw4DAhoFAKBdMBgGCSqGSIb3DQEJ
-# AzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE4MDgxNDE3MjE0MFowIwYJ
-# KoZIhvcNAQkEMRYEFAJi+YoVQ9FyjQkUKDp3Wj5TVfkBMA0GCSqGSIb3DQEBAQUA
-# BIIBAHQe2hdSW01mxOBN3lHlmx9NUGUVvR5jO+4330yHHJ6G6jtgcDfAGvaXLuXU
-# LxwSLqLUvWA8LUFejnB2fbqh+ujcYdNyfiQozxZFiTPNWMSZe9DYMm6nEpvWSwQT
-# yfG24eQXiExWEMFnEi3huuA8Oh58/JZmxRJvtnhKB6M/ZhH5rzkRefVMTnQBKZQK
-# DmcaYEupzs5uahdCjJXh35ImkuoKPGum/1BSKxPWjv0q4z36lxxDOGA5B3l0jo0Y
-# xKStOzD7koeirNYAL4iR3NJ8CuSx5zaPH2GCX+nWwPts8L8oq2HCqglyVQZlKZP1
-# bGlu3iYylhNzNqM7IoRDEpBnLoQ=
+# AzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE4MDgyMzE1NTczMVowIwYJ
+# KoZIhvcNAQkEMRYEFFNeMuw+kr/WMe+MXrpXEs/oMk0GMA0GCSqGSIb3DQEBAQUA
+# BIIBAAzQIi52Rz71usxB+C5Ekmym1iR1ueGKdYwf0xm4UB9Qac8ymPMmWeWv73pu
+# yWemmX9MXzTcAG0njVj4jh4Nxo118c08/m3NK7a/aWHius+U6vdPMhwOzV5SFBh5
+# KKFF6l6akyJR0kdnNmgDWXa13+y8APr1wEB01E+Azg58Qd56bb9yvjZszLPZCclP
+# 1HOvG6DPSg+MCaBLQuSfDRw6MfTPmeUFcN6xEGp6gdUvnHf3wnANgKyOeFKD1nhz
+# cmzHuQeAn8fFBDuo1UFIQa5snYuwFPndr/Iad4l+VJmWjMKvOuGL9C5p2hwBD2X9
+# 5U1zvHIpvmqGQ/fH6QyAtU9Io8M=
 # SIG # End signature block
